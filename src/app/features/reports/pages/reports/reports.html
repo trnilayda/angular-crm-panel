@@ -1,0 +1,147 @@
+<div class="page">
+
+  <!-- Raporlar & Analizler Başlık Kısmı -->
+  <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+        <i class="pi pi-chart-bar text-blue-600 text-2xl"></i>Raporlar & Analizler
+      </h1>
+      <p class="text-slate-500 mt-1">CRM Panel finansal analiz, departman giderleri ve İK özet raporları</p>
+    </div>
+
+
+  </div>
+
+  <!-- Finansal Kartlar -->
+  @if (generationSuccess) {
+  <div
+    class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl p-4 flex items-center gap-3 transition-all animate-bounce">
+    <i class="pi pi-check-circle text-emerald-600 text-xl"></i>
+    <div>
+      <h4 class="font-bold text-sm">Rapor Başarıyla Oluşturuldu!</h4>
+      <p class="text-xs text-emerald-600 mt-0.5">En son verileri içeren excel raporu listeye eklendi.</p>
+    </div>
+  </div>
+  }
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+    <div
+      class="bg-linear-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg shadow-blue-500/10 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300 transform hover:-translate-y-1">
+      <div class="flex justify-between items-start">
+        <div>
+          <span class="text-blue-100 text-sm font-medium uppercase tracking-wider">Toplam Maaş Bütçesi</span>
+          <h3 class="text-3xl font-bold mt-2">{{ totalSalary | number:'1.0-0' }} ₺</h3>
+        </div>
+        <div class="bg-white/10 p-3 rounded-lg backdrop-blur-md">
+          <i class="pi pi-wallet text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-blue-100 flex items-center gap-1">
+        <i class="pi pi-check-circle"></i>
+        <span>Aylık toplam maaş ödemesi</span>
+      </div>
+    </div>
+
+    <div
+      class="bg-linear-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white shadow-lg shadow-emerald-500/10 hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-300 transform hover:-translate-y-1">
+      <div class="flex justify-between items-start">
+        <div>
+          <span class="text-emerald-100 text-sm font-medium uppercase tracking-wider">Ortalama Maaş</span>
+          <h3 class="text-3xl font-bold mt-2">{{ averageSalary | number:'1.0-0' }} ₺</h3>
+        </div>
+        <div class="bg-white/10 p-3 rounded-lg backdrop-blur-md">
+          <i class="pi pi-chart-line text-xl"></i>
+        </div>
+      </div>
+      <div class="mt-4 text-xs text-emerald-100 flex items-center gap-1">
+        <i class="pi pi-sliders-h"></i>
+        <span>Kişi başı düşen ortalama</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Content Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left: Department Breakdown -->
+    <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-xs border border-slate-200">
+      <div class="mb-6">
+        <h2 class="text-xl font-bold text-slate-900">Departman Bazlı Bütçe Analizi</h2>
+        <p class="text-slate-400 text-xs mt-1">Departmanların personel sayısı, bütçe payı ve ortalama maaş bilgileri</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
+              <th class="pb-3 font-semibold">Departman</th>
+              <th class="pb-3 font-semibold text-center">Çalışan Sayısı</th>
+              <th class="pb-3 font-semibold text-right">Toplam Bütçe</th>
+              <th class="pb-3 font-semibold text-right">Ortalama Maaş</th>
+              <th class="pb-3 font-semibold text-center">Bütçe Payı %</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-sm text-slate-600">
+            @for (dept of departmentStats; track dept.name) {
+            <tr class="hover:bg-slate-50/50 transition-colors">
+              <td class="py-4 font-semibold text-slate-900">{{ dept.name }}</td>
+              <td class="py-4 text-center font-medium">{{ dept.count }} kişi</td>
+              <td class="py-4 text-right font-bold text-slate-900">{{ dept.totalSalary | number:'1.0-0' }} ₺</td>
+              <td class="py-4 text-right text-slate-500">{{ dept.averageSalary | number:'1.0-0' }} ₺</td>
+              <td class="py-4">
+                <div class="flex items-center justify-center gap-2">
+                  <div class="w-16 bg-slate-100 h-2 rounded-full overflow-hidden">
+                    <div class="bg-blue-600 h-full rounded-full transition-all duration-500"
+                      [style.width.%]="dept.percentage">
+                    </div>
+                  </div>
+                  <span class="text-xs font-bold text-slate-600">{{ dept.percentage | number:'1.0-1' }}%</span>
+                </div>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="5" class="py-8 text-center text-slate-400 italic">
+                Hesaplanacak veri bulunamadı. Lütfen personel ekleyin.
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right: Available Downloads -->
+    <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200">
+      <div class="mb-6">
+        <h2 class="text-xl font-bold text-slate-900">Hazır Raporlar</h2>
+        <p class="text-slate-400 text-xs mt-1">İndirmeye hazır arşivlenmiş PDF ve Excel dosyaları</p>
+      </div>
+
+      <div class="space-y-4">
+        @for (report of availableReports; track report.name) {
+        <div
+          class="flex items-center justify-between p-3.5 bg-slate-50/70 border border-slate-100 rounded-xl hover:border-blue-100 hover:bg-blue-50/20 transition-all duration-200">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-lg flex items-center justify-center text-lg"
+              [class]="report.type === 'PDF' ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'">
+              <i [class]="report.type === 'PDF' ? 'pi pi-file-pdf' : 'pi pi-file-excel'"></i>
+            </div>
+            <div class="min-w-0">
+              <h4 class="text-sm font-bold text-slate-900 truncate max-w-[150px]" [title]="report.name">
+                {{ report.name }}
+              </h4>
+              <p class="text-xs text-slate-400 mt-0.5">{{ report.date }} • {{ report.size }}</p>
+            </div>
+          </div>
+
+          <button (click)="downloadReport(report.name)"
+            class="inline-flex items-center justify-center p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all border-none outline-none bg-transparent cursor-pointer">
+            <i class="pi pi-download text-sm"></i>
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>

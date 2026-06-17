@@ -1,0 +1,77 @@
+{
+  "employees": [
+    {
+      "name": "Ahmet Yılmaz",
+      "department": "Yazılım",
+      "salary": 55000,
+      "id": "d_7uq91kZWI"
+    },
+    {
+      "name": "Ayşe Demir",
+      "department": "Muhasebe",
+      "salary": 38000,
+      "id": "XJ5azAHVUYs"
+    },
+    {
+      "name": "Mehmet Kaya",
+      "department": "İnsan Kaynakları",
+      "salary": 42000,
+      "id": "badwj1D-48Y"
+    },
+    {
+      "name": "Selin Yılmaz",
+      "department": "Yazılım",
+      "salary": 50000,
+      "id": "mxdXUhZ5mIY"
+    },
+    {
+      "name": "Zeynep Yılmaz",
+      "department": "Pazarlama",
+      "salary": 45000,
+      "id": "KEhi9-64zHU"
+    },
+    {
+      "name": "Fatma Kaya",
+      "department": "Pazarlama",
+      "salary": 48000,
+      "id": "uDOH5UAgK0w"
+    },
+    {
+      "name": "Hasan Yılmaz",
+      "department": "Satış",
+      "salary": 40000,
+      "id": "z2oz26r2FXc"
+    },
+    {
+      "name": "İlayda Kaya",
+      "department": "Satış",
+      "salary": 42000,
+      "id": "mehnHFwiFLg"
+    },
+    {
+      "name": "Can Yılmaz",
+      "department": "Pazarlama",
+      "salary": 45000,
+      "id": "xUBzCOOu944"
+    },
+    {
+      "name": "Elif Kaya",
+      "department": "Satış",
+      "salary": 43000,
+      "id": "-IImKiSJU5g"
+    },
+    {
+      "id": "rWrXpVi4r8Y",
+      "name": "Selda Can",
+      "department": "Satış",
+      "salary": 1000
+    },
+    {
+      "name": "Emel Duman",
+      "department": "Yazılım",
+      "salary": 30000,
+      "id": "6ECgMJdMBto"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

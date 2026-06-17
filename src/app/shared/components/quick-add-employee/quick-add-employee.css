@@ -1,0 +1,25 @@
+/* Custom Dialog Styles */
+::ng-deep .custom-dialog {
+  border-radius: 16px !important; /*Köşeleri yuvarlatır*/
+  overflow: hidden; /*İçerik taşmasını önler*/
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important; /*Hafif gri kenarlık*/
+}
+
+::ng-deep .custom-dialog .p-dialog-header {
+  padding: 1.5rem 1.5rem 1rem 1.5rem !important; /*Üst, sağ, alt, sol boşluklar*/
+  background-color: #ffffff !important; /*Beyaz arka plan*/
+  border-bottom: 1px solid #f1f5f9 !important; /*İnce gri ayırıcı çizgi*/
+  display: flex !important; /*İçindeki elemanlar yan yana gelir*/
+  align-items: center !important; /*Dikey ortalar*/
+  justify-content: space-between !important; /*Elemanları başa ve sona iter*/
+}
+
+::ng-deep .custom-dialog .p-dialog-header .p-dialog-title {
+  font-weight: 700 !important; /*Kalın yazı*/
+}
+
+::ng-deep .custom-dialog .p-dialog-content {
+  padding: 0 1.5rem 1.5rem 1.5rem !important; /*İç boşluklar*/
+  background-color: #ffffff !important; /*Beyaz arka plan*/
+}

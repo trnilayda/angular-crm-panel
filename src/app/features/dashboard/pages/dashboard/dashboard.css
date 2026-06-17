@@ -1,0 +1,9 @@
+.page {
+  padding: 20px; /*İç boşluklar*/
+  background-color: #d8e4f1; /*Açık mavi arka plan*/
+  min-height: 100vh; /*En az ekran boyu*/
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /*Yazı tipi*/
+  display: flex; /*Dikey hizalar*/
+  flex-direction: column; /*Sütun düzeni*/
+  border-radius: 10px; /*Köşeleri yuvarlatır*/
+}

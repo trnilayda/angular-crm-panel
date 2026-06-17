@@ -1,0 +1,20 @@
+@if (employee) {
+<div class="card">
+    
+  <h2>{{ employee.name }}</h2>
+  <p>
+    Departman:
+    {{ employee.department }}
+  </p>
+
+  <p>
+    Maaş:
+    {{ employee.salary }} ₺
+  </p>
+
+  <button (click)="removeEmployee()">
+    Sil
+  </button>
+
+</div>
+}

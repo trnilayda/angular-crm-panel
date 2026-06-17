@@ -1,0 +1,59 @@
+<div class="login-wrapper">
+  <!-- Glowing Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- Main Login Card -->
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo-container">
+        <i class="pi pi-heart-fill text-3xl"></i>
+      </div>
+      <h2>CRM Panel</h2>
+      <p>Devam etmek için lütfen giriş yapın</p>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+
+      <!-- Hata Mesajı -->
+      @if (errorMessage) {
+      <div class="error-alert animate-shake">
+        <i class="pi pi-exclamation-triangle"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
+      }
+
+      <!-- Kullanıcı Adı Field -->
+      <div class="form-group">
+        <label for="username">Kullanıcı Adı veya Personel Adı</label>
+        <div class="input-wrapper">
+          <i class="pi pi-user input-icon"></i>
+          <input type="text" id="username" name="username" [(ngModel)]="username"
+            placeholder="Kullanıcı adı veya Ad Soyad" required [disabled]="isLoading" class="input-field" />
+        </div>
+      </div>
+
+      <!-- Şifre Field -->
+      <div class="form-group">
+        <label for="password">Parola</label>
+        <div class="input-wrapper">
+          <i class="pi pi-key input-icon"></i>
+          <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="••••" required
+            [disabled]="isLoading" class="input-field" />
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="isLoading || !loginForm.form.valid" class="submit-button">
+        <!--(tıklanamaz hale gelme) kuralı-->
+        @if (isLoading) {
+        <i class="pi pi-spin pi-spinner mr-2"></i>
+        <span>Giriş Yapılıyor...</span>
+        } @else {
+        <span>Giriş Yap</span>
+        }
+      </button>
+    </form>
+  </div>
+</div>

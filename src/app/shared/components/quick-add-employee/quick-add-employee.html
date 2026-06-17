@@ -1,0 +1,119 @@
+<!-- Quick Action Card -->
+<div class="bg-blue-50/50 border border-blue-100 rounded-xl p-4 flex items-center justify-between">
+  <div>
+    <h4 class="text-sm font-bold text-slate-900">Yeni Çalışan Mı?</h4>
+    <p class="text-xs text-slate-500 mt-1">Hızlıca yeni personel kaydı yapın.</p>
+  </div>
+  <button
+    class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs px-4 py-2.5 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm shadow-blue-500/20"
+    (click)="showAddDialog = true">
+    <i class="pi pi-plus"></i> Ekle
+  </button>
+</div>
+
+<p-dialog 
+  [(visible)]="showAddDialog" 
+  [modal]="true" 
+  [style]="{ width: '450px' }"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="custom-dialog">
+
+  <ng-template pTemplate="header">
+    <div class="flex items-center gap-2.5">
+      <div class="bg-blue-50 p-2 rounded-lg text-blue-600">
+        <i class="pi pi-user-plus text-lg"></i>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-slate-900 leading-none">Yeni Personel Ekle</h3>
+        <span class="text-xs text-slate-400">Sisteme yeni bir çalışan kaydı yapın</span>
+      </div>
+    </div>
+  </ng-template>
+
+  <div [formGroup]="empForm" class="flex flex-col gap-5 pt-4 pb-2">
+    <!-- Ad Soyad Field -->
+    <div class="flex flex-col gap-1.5">
+      <label class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+        Ad Soyad
+      </label>
+      <div class="relative">
+        <i class="pi pi-user absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          pInputText 
+          type="text" 
+          placeholder="Örn: Ahmet Yılmaz" 
+          formControlName="name"
+          class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm" />
+      </div>
+
+      @if (empForm.get('name')?.touched && empForm.get('name')?.invalid) {
+        <span class="text-xs text-red-500 font-medium flex items-center gap-1">
+          <i class="pi pi-exclamation-circle"></i> Ad soyad alanı zorunludur.
+        </span>
+      }
+    </div>
+
+    <!-- Departman Field -->
+    <div class="flex flex-col gap-1.5">
+      <label class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+        Departman
+      </label>
+      <div class="relative">
+        <i class="pi pi-building absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          pInputText 
+          type="text" 
+          placeholder="Örn: Yazılım" 
+          formControlName="department"
+          class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm" 
+        />
+      </div>
+      @if (empForm.get('department')?.touched && empForm.get('department')?.invalid) {
+        <span class="text-xs text-red-500 font-medium flex items-center gap-1">
+          <i class="pi pi-exclamation-circle"></i> Departman alanı zorunludur.
+        </span>
+      }
+    </div>
+
+    <!-- Maaş Field -->
+    <div class="flex flex-col gap-1.5">
+      <label class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+        Maaş (Aylık Net)
+      </label>
+      <div class="relative">
+        <i class="pi pi-wallet absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          pInputText 
+          type="number" 
+          placeholder="Örn: 55000" 
+          formControlName="salary"
+          class="w-full pl-10 pr-12 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm" 
+        />
+        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-semibold">₺</span>
+      </div>
+      @if (empForm.get('salary')?.touched && empForm.get('salary')?.invalid) {
+        <span class="text-xs text-red-500 font-medium flex items-center gap-1">
+          <i class="pi pi-exclamation-circle"></i> Maaş en az 1 ₺ olmalıdır.
+        </span>
+      }
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end gap-3 mt-4 pt-4 border-t border-slate-100">
+      <button 
+        type="button" 
+        (click)="showAddDialog = false" 
+        class="px-5 py-2.5 text-slate-600 hover:text-slate-800 font-semibold text-sm hover:bg-slate-50 rounded-xl transition-all cursor-pointer border-none outline-none">
+        Vazgeç
+      </button>
+      <button 
+        type="button" 
+        (click)="addEmployee()" 
+        [disabled]="empForm.invalid" 
+        class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer border-none outline-none">
+        Personeli Kaydet
+      </button>
+    </div>
+  </div>
+</p-dialog>

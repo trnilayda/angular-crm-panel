@@ -1,0 +1,231 @@
+/* Genel Sayfa Yapısı */
+.page {
+  padding: 20px;
+  /* Kenar boşluklarını sabitledik */
+  background-color: #d8e4f1;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  /* İçeriği dikeyde hizalamak için */
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+/* Tabloyu ekrana sığdıran ana yapı */
+table {
+  width: 100%;
+  /* Sayfanın tüm genişliğini kapla */
+  table-layout: fixed;
+  /* Sütun genişliklerini sabit tutar, taşmayı önler */
+  border-collapse: collapse;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+th {
+  background-color: #f1f5f9;
+  padding: 15px;
+  text-align: left;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  /* Başlıkları biraz daha belirgin yaptık */
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #e2e8f0;
+
+}
+
+td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #f1f5f9;
+  word-wrap: break-word;
+  /* Uzun metinlerin alt satıra geçmesini sağlar */
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #e2e8f0;
+}
+
+/* Tablo İçindeki Div/Metin Yapısı */
+.static-cell-text {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Yeni Ekleme Formu */
+.add-form {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 25px;
+}
+
+.add-form h2 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin-bottom: 15px;
+
+}
+
+/* Form içindeki giriş alanlarını yan yana dizer */
+.form-row {
+  display: flex;
+  gap: 10px;
+  /* Elemanlar arası boşluk */
+  flex-wrap: wrap;
+  /* Ekran daralınca alt satıra geçer */
+}
+
+.form-row input {
+  flex: 1;
+  /* Inputların eşit büyümesini sağlar */
+  min-width: 150px;
+  /* Çok küçülmelerini engeller */
+}
+
+/* Buton Efektleri */
+button {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(0.9);
+  /* Renk tonunu hafif karartır */
+  transform: translateY(-1px);
+}
+
+.top-bar {
+  display: flex;
+  flex-wrap: wrap; /*Ekran daraldığında başlık ve butonlar alt alta kayar.*/
+  justify-content: space-between; /*Ana başlık ile butonları yan yana ayırır.*/
+  align-items: center; /*Butonların dikey hizasını ayarlar.*/
+  gap: 15px; /*Butonlar ve başlık arasındaki boşluk.*/
+  margin-bottom: 25px; /*Butonların altında bırakacağı boşluk.*/
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.search-badge {
+  display: inline-flex; /*Normal metin gibi davranır ancak içindeki elemanlar (yazı ve ikon) yan yana gelir.*/
+  align-items: center; /*Yazı ve ikonun dikey hizasını ortalar.*/
+  gap: 6px; /*Yazı ile ikon arasındaki boşluk.*/
+  background-color: #3b82f6;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  margin-left: 10px;
+  cursor: pointer; /*Üzerine gelince el işareti çıkar*/
+  vertical-align: middle; /*Metinle aynı hizada durur*/
+  transition: all 0.2s; /*Tıklama efektleri için*/
+}
+
+.search-badge:hover {
+  background-color: #2563eb; /*Üzerine gelince daha koyu mavi olur*/
+  transform: scale(1.05); /*Üzerine gelince hafif büyür*/
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column; /*Dikey hizalar*/
+    align-items: flex-start; /*Soldan başlar*/
+  }
+
+  .action-buttons {
+    flex-direction: column; /*Dikey hizalar*/
+    width: 100%; /*Genişlik %100*/
+    margin-top: 10px; /*Üst boşluk*/
+  }
+
+  .action-buttons button {
+    width: 100%;
+    background-color: #1d4ed8;
+  }
+
+  .search-badge {
+    margin-left: 0;
+    margin-top: 8px;
+    display: flex;
+    width: max-content;
+  }
+}
+
+/* Custom Dialog Styles */
+::ng-deep .custom-dialog {
+  border-radius: 16px !important; /*Köşeleri yuvarlatır*/
+  overflow: hidden; /*İçerik taşmasını önler*/
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important; /*Hafif gri kenarlık*/
+}
+
+::ng-deep .custom-dialog .p-dialog-header {
+  padding: 1.5rem 1.5rem 1rem 1.5rem !important; /*Üst, sağ, alt, sol boşluklar*/
+  background-color: #ffffff !important; /*Beyaz arka plan*/
+  border-bottom: 1px solid #f1f5f9 !important; /*İnce gri ayırıcı çizgi*/
+  display: flex !important; /*İçindeki elemanlar yan yana gelir*/
+  align-items: center !important; /*Dikey ortalar*/
+  justify-content: space-between !important; /*Elemanları başa ve sona iter*/
+}
+
+::ng-deep .custom-dialog .p-dialog-header .p-dialog-title {
+  font-weight: 700 !important; /*Kalın yazı*/
+}
+
+::ng-deep .custom-dialog .p-dialog-content {
+  padding: 0 1.5rem 1.5rem 1.5rem !important; /*İç boşluklar*/
+  background-color: #ffffff !important; /*Beyaz arka plan*/
+}
+
+/* Custom Confirm Dialog Styles */
+::ng-deep .custom-confirm-dialog {
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid rgba(226, 232, 240, 0.8) !important;
+}
+
+::ng-deep .custom-confirm-dialog .p-dialog-header {
+  padding: 1.5rem 1.5rem 1rem 1.5rem !important;
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+::ng-deep .custom-confirm-dialog .p-dialog-header .p-dialog-title {
+  font-weight: 700 !important;
+}
+
+::ng-deep .custom-confirm-dialog .p-dialog-content {
+  padding: 1.5rem !important;
+  background-color: #ffffff !important;
+}
+
+::ng-deep .custom-confirm-dialog .p-dialog-footer {
+  padding: 1rem 1.5rem 1.5rem 1.5rem !important;
+  background-color: #ffffff !important;
+  border-top: 1px solid #f1f5f9 !important;
+}
+
+::ng-deep .custom-confirm-dialog .p-confirm-dialog-message {
+  margin-left: 1rem;
+}

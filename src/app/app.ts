@@ -1,12 +1,29 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Sidebar } from './shared/components/sidebar/sidebar';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import { MenubarModule } from 'primeng/menubar';
+import { ScrollTopModule } from "primeng/scrolltop";
+import { AuthService } from './core/services/auth.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    Sidebar,
+    ConfirmDialogModule,
+    MenubarModule,
+    ScrollTopModule,
+    NgxSpinnerModule],
+  providers: [ConfirmationService],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
+
 export class App {
-  protected readonly title = signal('crm-panel');
+  authService = inject(AuthService);
 }

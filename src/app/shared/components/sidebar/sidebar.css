@@ -1,0 +1,139 @@
+/*admin paneli*/
+.sidebar {
+  width: 220px;
+  height: calc(100vh - 20px);
+  background: #121d2e;
+  padding: 20px 24px;
+  margin: 10px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+  padding: 20px 15px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  min-height: 32px;
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+}
+
+.sidebar h2 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
+/* Menü Öğeleri */
+.menu-item {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 6px;
+  border: 2px solid #445870;
+  background-color: #121d2e;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.sidebar.collapsed .menu-item {
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.menu-item i {
+  font-size: 1.2rem;
+}
+
+.menu-item span {
+  margin-left: 10px;
+}
+
+.menu-item:hover {
+  border-color: #5484bb;
+  background-color: #445870;
+}
+
+/* Açma/Kapama Butonu */
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.menu-container {
+  flex: 1;
+}
+
+/* Çıkış Yap Butonu */
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 20px;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  color: #fca5a5;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 6px;
+  border: 2px solid rgba(239, 68, 68, 0.35);
+  background-color: rgba(239, 68, 68, 0.05);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.logout-btn i {
+  font-size: 1.2rem;
+}
+
+.logout-btn span {
+  margin-left: 10px;
+}
+
+.logout-btn:hover {
+  background-color: #ef4444;
+  color: white;
+  border-color: #ef4444;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.logout-btn.collapsed-btn {
+  justify-content: center;
+  padding: 12px 0;
+}

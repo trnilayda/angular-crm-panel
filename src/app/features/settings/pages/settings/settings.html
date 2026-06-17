@@ -1,0 +1,205 @@
+<div class="page">
+
+  <!-- Header -->
+  <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <!--flex-col md:flex-row sınıfı sayesinde sayfa başlığı ve kaydet butonu mobilde alt alta dizilerek taşmalar önlenir, bilgisayar ekranlarında ise karşılıklı köşelere kusursuzca yaslanır.-->
+    <div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
+        <i class="pi pi-cog text-blue-600 text-2xl"></i>Sistem Ayarları
+      </h1>
+      <p class="text-slate-500 mt-1">CRM Panel genel yapılandırma, bildirimler ve sistem tercihleri</p>
+    </div>
+
+    <div>
+      <button 
+        (click)="saveSettings()"
+        class="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer border-none outline-none">
+        <i class="pi pi-save text-sm"></i>
+        <span>Ayarları Kaydet</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Kaydetme Başarılı Mesajı -->
+  @if (saveSuccess) {
+    <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl p-4 flex items-center gap-3 transition-all animate-fade-in">
+      <i class="pi pi-check-circle text-emerald-600 text-xl"></i>
+      <div>
+        <h4 class="font-bold text-sm">Ayarlar Başarıyla Kaydedildi!</h4>
+        <p class="text-xs text-emerald-600 mt-0.5">Yaptığınız değişiklikler tarayıcınıza kaydedildi ve uygulandı.</p>
+      </div>
+    </div>
+  }
+
+    <!-- Sayfa Yapısı -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8"> <!--grid-cols-1 lg:grid-cols-3: Büyük bilgisayar ekranlarında (lg:) sayfa hayali olarak 3 eşit sütuna bölünür.-->
+
+      <!-- Sol Sütun (Sağda daha az yer kaplaması için 2 kolon kaplar)-->
+      <div class="lg:col-span-2 space-y-6"><!-- lg:col-span-2: Bu sınıf sayesinde sol taraftaki içerikler, sayfanın 3'te 2'lik kısmını (yani iki sütunluk alanı) kaplar.-->
+        
+        <!-- Genel Ayarlar Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200">
+          <div class="mb-6 flex items-center gap-2.5 pb-4 border-b border-slate-100">
+            <i class="pi pi-sliders-h text-blue-600 text-lg bg-blue-50 p-2 rounded-lg"></i>
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">Genel Ayarlar</h2>
+              <p class="text-slate-400 text-xs mt-0.5">Sistem temel tanımlamaları ve şirket ayarları</p>
+            </div>
+          </div>
+
+          <div class="space-y-5">
+            <!-- Şirket Ünvanı -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Şirket Ünvanı</label>
+              <input 
+                type="text" 
+                [(ngModel)]="companyName" 
+                placeholder="Şirket adını girin..."
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm bg-white" />
+            </div>
+
+            <!-- Para Birimi & Otomatik Yedekleme -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Para Birimi</label>
+                <select 
+                  [(ngModel)]="currency" 
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm bg-white cursor-pointer">
+                  <option value="TRY">Türk Lirası (₺)</option>
+                  <option value="USD">Amerikan Doları ($)</option>
+                  <option value="EUR">Euro (€)</option>
+                </select>
+              </div>
+
+              <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-100">
+                <div>
+                  <h4 class="text-sm font-bold text-slate-900">Otomatik Yedekleme</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Verileri günlük yedekler.</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" [(ngModel)]="autoBackup" class="sr-only peer">
+                  <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aylık Özet Raporu Ayarları Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200">
+          <div class="mb-6 flex items-center gap-2.5 pb-4 border-b border-slate-100">
+            <i class="pi pi-file-excel text-blue-600 text-lg bg-blue-50 p-2 rounded-lg"></i>
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">Aylık Özet Raporu Ayarları</h2>
+              <p class="text-slate-400 text-xs mt-0.5">Periyodik e-posta raporu gönderim takvimi ve alıcı bilgileri</p>
+            </div>
+          </div>
+
+          <div class="space-y-5">
+            <!-- Raporu Etkinleştir -->
+            <div class="flex items-center justify-between p-3.5 bg-blue-50/30 rounded-xl border border-blue-100/50">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900">Aylık Özet Raporunu Etkinleştir</h4>
+                <p class="text-xs text-slate-500 mt-0.5">Sistem her ay sonu otomatik özet rapor hazırlayıp gönderir.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [(ngModel)]="monthlyReportEnabled" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <!-- Ayarlar Alanı -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" [class.opacity-50]="!monthlyReportEnabled" [class.pointer-events-none]="!monthlyReportEnabled">
+              <!-- Rapor Gönderim Tarihi -->
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Gönderim Tarihi</label>
+                <input 
+                  type="date" 
+                  [(ngModel)]="monthlyReportDate"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm bg-white" />
+              </div>
+
+              <!-- Rapor Formatı -->
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Rapor Formatı</label>
+                <select 
+                  [(ngModel)]="monthlyReportFormat"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm bg-white cursor-pointer">
+                  <option value="PDF">PDF Formatı</option>
+                  <option value="Excel">Excel (.xlsx) Formatı</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Rapor Alıcı E-posta -->
+            <div class="flex flex-col gap-1.5" [class.opacity-50]="!monthlyReportEnabled" [class.pointer-events-none]="!monthlyReportEnabled">
+              <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Rapor Alıcı E-posta Adresi</label>
+              <input 
+                type="email" 
+                [(ngModel)]="monthlyReportEmail"
+                placeholder="Örn: yonetim@firma.com"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm bg-white" />
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column -->
+      <div class="space-y-6">
+        
+        <!-- Notification Settings Card -->
+        <div class="bg-white rounded-2xl p-6 shadow-xs border border-slate-200">
+          <div class="mb-6 flex items-center gap-2.5 pb-4 border-b border-slate-100">
+            <i class="pi pi-bell text-blue-600 text-lg bg-blue-50 p-2 rounded-lg"></i>
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">Bildirim Ayarları</h2>
+              <p class="text-slate-400 text-xs mt-0.5">Hangi kanallardan bildirim alacağınızı seçin</p>
+            </div>
+          </div>
+
+          <div class="space-y-5">
+            <!-- E-posta Bildirimleri -->
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900">E-posta Bildirimleri</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Yeni personel eklemelerinde e-posta alır.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [(ngModel)]="emailNotifications" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <!-- SMS Bildirimleri -->
+            <div class="flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900">SMS Bildirimleri</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Yeni personel eklemelerinde SMS bildirimi alır.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [(ngModel)]="smsNotifications" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <!-- Sistem İçi Uyarılar -->
+            <div class="flex items-center justify-between pt-4 border-t border-slate-50">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900">Sistem İçi Uyarılar</h4>
+                <p class="text-xs text-slate-400 mt-0.5">Tarayıcıda anlık bildirimler gösterir.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" [(ngModel)]="systemAlerts" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,246 @@
+<p-confirmDialog [style]="{ width: '450px' }" styleClass="custom-confirm-dialog"></p-confirmDialog>
+
+<div class="page">
+
+  <!--Personel Yönetimi Başlık Kısmı-->
+  <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight flex flex-wrap items-center gap-3"> Personel
+      Yönetimi
+
+      @if (searchText) {
+      <!--Kullanıcı arama penceresinde bir şey yazdığı anda, başlığın hemen yanında mavi renkli oval bir etiket fırlar.-->
+      <span
+        class="inline-flex items-center gap-1.5 bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full cursor-pointer hover:bg-blue-700 transition-all shadow-sm shadow-blue-500/10"
+        (click)="searchText = ''" title="Aramayı temizlemek için tıklayın">
+        <!--Bu etikete tıklandığında searchText değişkeninin içi sıfırlanır. Angular çift yönlü bağlama ([(ngModel)]) kullandığı için siz buna tıkladığınızda arama kutusunun içi de temizlenir ve tablo eski haline döner. -->
+        Arama: "{{ searchText }}" <i class="pi pi-times-circle"></i>
+      </span>
+      }
+    </h1>
+
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+
+      <!-- 'admin' rolüne sahip kullanıcılar "Personel Ekle" butonunu görebilecektir.
+      @if (authService.hasPermission('admin')) {
+        <button (click)="showAddDialog = true"
+          class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer border-none outline-none">
+          <i class="pi pi-plus text-sm"></i>
+          <span>Personel Ekle</span>
+        </button>
+      }-->
+
+      @if (authService.getUserRole() === 'admin') {
+      <button (click)="showAddDialog = true"
+        class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer border-none outline-none">
+        <i class="pi pi-plus text-sm"></i>
+        <span>Personel Ekle</span>
+      </button>
+      }
+
+      <button (click)="showSearchDialog = true"
+        class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-400/10 hover:shadow-lg hover:shadow-blue-400/25 transition-all duration-300 hover:-translate-y-0.5 cursor-pointer border-none outline-none">
+        <i class="pi pi-search text-sm"></i>
+        <span>Personel Ara</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabloya ham personel listesini değil, filtrelenmiş listeyi bağlarız. Arama yapıldığında bu liste daraldığı için tablo anlık olarak güncellenir -->
+  <p-table [value]="filteredEmployees" dataKey="id" responsiveLayout="stack" [breakpoint]="'768px'"
+    [tableStyle]="{ 'min-width': '1rem' }">
+
+    <ng-template pTemplate="header">
+
+      <tr>
+        <th>ID</th>
+        <th>Ad Soyad</th>
+        <th>Departman</th>
+        <th>Maaş</th>
+        @if (authService.getUserRole() === 'admin') {
+        <th style="width:100px">İşlem</th>
+        }
+      </tr>
+
+    </ng-template>
+
+    <ng-template pTemplate="body" let-employee>
+
+      <tr>
+        <td>
+          <div class="static-cell-text"> {{ employee.id }}</div>
+        </td>
+        <td>
+          <div class="static-cell-text"> {{ employee.name }}</div>
+        </td>
+        <td>
+          <div class="static-cell-text"> {{ employee.department }}</div>
+        </td>
+        <td>
+          <div class="static-cell-text"> {{ employee.salary }}</div>
+        </td>
+        @if (authService.getUserRole() === 'admin') {
+        <td class="action-column text-center">
+          <button (click)="deleteEmployee(employee)"
+            class="inline-flex items-center justify-center p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-xl transition-all border-none outline-none bg-transparent cursor-pointer"
+            title="Personeli Sil">
+            <i class="pi pi-trash text-lg"></i>
+          </button>
+        </td>
+        }
+      </tr>
+
+    </ng-template>
+
+  </p-table>
+
+  <p-dialog [(visible)]="showAddDialog" [modal]="true" [style]="{ width: '450px' }" [draggable]="false"
+    [resizable]="false" styleClass="custom-dialog">
+    <!--[(visible)]="showAddDialog": Çift yönlü bağlamadır. TypeScript'teki buton true yapınca pencere açılır. Kullanıcı pencerenin dışına tıkladığında veya "X" butonuna bastığında Angular bu değişkeni otomatik false yapar. -->
+    <!--[modal]="true": Arkadaki ana sayfayı karartır ve tıklanamaz hale getirir (odağı tamamen pencereye toplar) -->
+    <!--[draggable]="false" [resizable]="false": Kullanıcının pencereyi ekranda sağa sola sürüklemesini veya köşesinden tutup büyütmesini engeller. Tasarımın sabit ve düzgün kalmasını sağlar -->
+
+    <ng-template pTemplate="header">
+      <!--kullanılarak PrimeNG'nin varsayılan düz başlığı ezilmiştir. Sol tarafa hafif mavi arka planlı bir user-plus (kullanıcı ekle) ikonu koyulmuş, yanına da kalın başlık ve hemen altına küçük gri bir açıklama metni eklenmiştir-->
+      <div class="flex items-center gap-2.5">
+        <div class="bg-blue-50 p-2 rounded-lg text-blue-600">
+          <i class="pi pi-user-plus text-lg"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 leading-none">Yeni Personel Ekle</h3>
+          <span class="text-xs text-slate-400">Sisteme yeni bir çalışan kaydı yapın</span>
+        </div>
+      </div>
+    </ng-template>
+
+    <div [formGroup]="empForm" class="flex flex-col gap-5 pt-4 pb-2">
+      <!-- Ad Soyad Field -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+          Ad Soyad
+        </label>
+        <div class="relative">
+          <!--relative ve absolute dengesi: İkonun giriş kutusunun içinde görünmesini sağlayan CSS hilesidir. Dış kutu relative yapılır, içindeki ikon absolute ile tam sol ortaya (top-1/2 -translate-y-1/2) sabitlenir.-->
+          <i class="pi pi-user absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input pInputText type="text" placeholder="Örn: Ahmet Yılmaz" formControlName="name"
+            class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm" />
+          <!--pl-10 (Padding Left): Giriş kutusunun sol tarafına 40px boşluk verir. Böylece kullanıcı yazı yazarken yazdığı harfler sol taraftaki ikonun üstüne binmez, ikonun sağından başlar.-->
+          <!--focus:ring-4 focus:ring-blue-100: Kullanıcı input kutusuna tıkladığı an (focus), kutunun etrafında hafif açık mavi, estetik bir hare (hale) oluşur.-->
+        </div>
+
+        @if (empForm.get('name')?.touched && empForm.get('name')?.invalid) {
+        <!--invalid: Alanın boş veyakurallara uymadığı durumda görünür touched: Kullanıcı alana dokunduğunda görünür-->
+        <span class="text-xs text-red-500 font-medium flex items-center gap-1">
+          <i class="pi pi-exclamation-circle"></i> Ad soyad alanı zorunludur.
+        </span>
+        }
+      </div>
+
+      <!-- Departman Field -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+          Departman
+        </label>
+        <div class="relative">
+          <i class="pi pi-building absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input pInputText type="text" placeholder="Örn: Yazılım" formControlName="department"
+            class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm" />
+        </div>
+        @if (empForm.get('department')?.touched && empForm.get('department')?.invalid) {
+        <span class="text-xs text-red-500 font-medium flex items-center gap-1">
+          <i class="pi pi-exclamation-circle"></i> Departman alanı zorunludur.
+        </span>
+        }
+      </div>
+
+      <!-- Maaş Field -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+          Maaş (Aylık Net)
+        </label>
+        <div class="relative">
+          <i class="pi pi-wallet absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input pInputText type="number" placeholder="Örn: 55000" formControlName="salary"
+            class="w-full pl-10 pr-12 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm" />
+          <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-semibold">₺</span>
+        </div>
+        @if (empForm.get('salary')?.touched && empForm.get('salary')?.invalid) {
+        <span class="text-xs text-red-500 font-medium flex items-center gap-1">
+          <i class="pi pi-exclamation-circle"></i> Maaş en az 30.000 ₺ olmalıdır.
+        </span>
+        }
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-end gap-3 mt-4 pt-4 border-t border-slate-100">
+        <button type="button" (click)="showAddDialog = false"
+          class="px-5 py-2.5 text-slate-600 hover:text-slate-800 font-semibold text-sm hover:bg-slate-50 rounded-xl transition-all cursor-pointer border-none outline-none">
+          Vazgeç
+        </button>
+        <button type="button" (click)="addEmployee()" [disabled]="empForm.invalid"
+          class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer border-none outline-none">
+          Personeli Kaydet
+        </button>
+        <!--[disabled]="empForm.invalid": Reaktif formlardan beslenir. Eğer input alanlarından herhangi biri boşsa veya hata veriyorsa, "Personeli Kaydet" butonu kilitlenir, tıklanamaz hale gelir.-->
+        <!--disabled:cursor-not-allowed: Buton kilitliyken kullanıcı faresini butonun üzerine getirirse, imleç "yasak/tıklanamaz" işaretine (Ø) dönüşür.-->
+        <!--:click="showAddDialog = false" : Eğer tıklama işlemi olursa, "showAddDialog" değişkeni false yapılır. Bu da Angular'ın reaktivite özelliğini devreye sokar; Angular otomatik olarak bu değişkenin durumundaki değişimi algılar ve ekranı günceller. Sonuç olarak, "Personel Ekle" penceresi kapanır.-->
+      </div>
+    </div>
+  </p-dialog>
+
+  <p-dialog [(visible)]="showSearchDialog" [modal]="true" [style]="{ width: '450px' }" [draggable]="false"
+    [resizable]="false" styleClass="custom-dialog">
+    <!--[modal]="true": Bu özellik, pencere açıldığında arka plandaki ana içeriğin etkileşime kapatılmasını sağlar. Böylece kullanıcı, pencereyi kapatmadan ana ekrandaki başka hiçbir şeye tıklayamaz.-->
+    <!--[style]="{ width: '450px' }": Pencerenin genişliğini 450 piksel olarak sabitler.-->
+    <!--[draggable]="false": Kullanıcının pencereyi fare ile sürükleyip ekranın başka bir yerine taşımasını engeller.-->
+    <!--[resizable]="false": Kullanıcının pencere kenarlarından tutup boyutunu değiştirmesini engeller.-->
+    <!--styleClass="custom-dialog": Bu Dialog bileşenine özel olarak tanımlanmış olan "custom-dialog" CSS sınıfını ekler. Bu sınıf, genellikle PrimaryNG'nin varsayılan tasarımından farklı, özel bir görünüm (örneğin farklı arka plan, gölge veya kenarlık) kazandırmak için kullanılır.-->
+
+    <ng-template pTemplate="header">
+      <div class="flex items-center gap-2.5">
+        <div class="bg-blue-50 p-2 rounded-lg text-blue-600">
+          <i class="pi pi-search text-lg"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 leading-none">Personel Ara</h3>
+          <span class="text-xs text-slate-400">Kayıtlı personeller arasında arama yapın</span>
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="flex flex-col gap-5 pt-4 pb-2">
+      <div class="flex flex-col gap-1.5">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+          Arama Kriteri (Ad Soyad)
+        </label>
+        <div class="relative w-full">
+          <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input pInputText type="text" placeholder="Aranacak personelin adını yazın..." [(ngModel)]="searchText"
+            class="w-full pl-10 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all outline-none text-slate-800 text-sm" />
+        </div>
+        <!--[(ngModel)]="searchText": Bu yapı, input kutusuna yazılan değeri otomatik olarak "searchText" değişkenine bağlar. Yani, kutuya bir şey yazdığınız anda o değer otomatik olarak "searchText" değişkenine aktarılır.-->
+        <!--@if (searchText): Bu Angular Angular'ın "Structural Directive"larından biridir. Temelde "EğersearchText değişkeninin bir değeri varsa (boş string değilse) aşağıdaki span etiketini ekrana göster" anlamına gelir.-->
+        <!--Bu Angular'ın "Structural Directive"larından biridir. Temelde "EğersearchText değişkeninin bir değeri varsa (boş string değilse) aşağıdaki span etiketini ekrana göster" anlamına gelir.-->
+        @if (searchText) {
+        <span class="text-xs text-blue-600 font-medium">
+          Arama yapılıyor. Eşleşen personeller listede filtrelenecektir.
+        </span>
+        }
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center justify-end gap-3 mt-4 pt-4 border-t border-slate-100">
+        @if (searchText) {
+        <button type="button" (click)="searchText = ''"
+          class="px-4 py-2.5 text-red-600 hover:text-red-700 font-semibold text-sm hover:bg-red-50 rounded-xl transition-all cursor-pointer border-none outline-none">
+          Aramayı Temizle
+        </button>
+        }
+        <button type="button" (click)="showSearchDialog = false"
+          class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-blue-500/10 hover:shadow-lg hover:shadow-blue-500/20 transition-all cursor-pointer border-none outline-none">
+          Kapat
+        </button>
+      </div>
+    </div>
+  </p-dialog>
+
+</div>
